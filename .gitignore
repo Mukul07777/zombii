@@ -4,6 +4,11 @@ dist
 .DS_Store
 *.log
 
+# secrets — never commit
+.env
+.env.local
+.env.*.local
+
 # leftover folders from the old express structure (safe to delete locally)
 backend
 frontend

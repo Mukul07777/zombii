@@ -45,20 +45,22 @@ export const DEMO_TODAY = "2026-07-25";
 export const DEMO_UNUSED = ["cult fit", "cult"];
 
 const KNOWN = {
-  netflix:  { cat: "Entertainment", color: "#e50914", icon: "N" },
-  spotify:  { cat: "Entertainment", color: "#1db954", icon: "S" },
-  prime:    { cat: "Shopping",      color: "#ff9900", icon: "P" },
-  amazon:   { cat: "Shopping",      color: "#ff9900", icon: "A" },
-  adobe:    { cat: "Productivity",  color: "#ed2224", icon: "Ad" },
-  icloud:   { cat: "Storage",       color: "#3693f3", icon: "☁" },
-  apple:    { cat: "Storage",       color: "#555",    icon: "" },
-  cult:     { cat: "Health",        color: "#f2385a", icon: "C" },
-  gym:      { cat: "Health",        color: "#f2385a", icon: "G" },
-  youtube:  { cat: "Entertainment", color: "#ff0000", icon: "Y" },
-  hotstar:  { cat: "Entertainment", color: "#1f80e0", icon: "H" },
-  notion:   { cat: "Productivity",  color: "#111",    icon: "N" },
-  linkedin: { cat: "Productivity",  color: "#0a66c2", icon: "in" },
+  netflix:  { cat: "Entertainment", color: "#e50914", icon: "N",  domain: "netflix.com" },
+  spotify:  { cat: "Entertainment", color: "#1db954", icon: "S",  domain: "spotify.com" },
+  prime:    { cat: "Shopping",      color: "#ff9900", icon: "P",  domain: "primevideo.com" },
+  amazon:   { cat: "Shopping",      color: "#ff9900", icon: "A",  domain: "amazon.com" },
+  adobe:    { cat: "Productivity",  color: "#ed2224", icon: "Ad", domain: "adobe.com" },
+  icloud:   { cat: "Storage",       color: "#3693f3", icon: "☁", domain: "icloud.com" },
+  apple:    { cat: "Storage",       color: "#555",    icon: "",   domain: "apple.com" },
+  cult:     { cat: "Health",        color: "#f2385a", icon: "C",  domain: "cult.fit" },
+  gym:      { cat: "Health",        color: "#f2385a", icon: "G",  domain: "cult.fit" },
+  youtube:  { cat: "Entertainment", color: "#ff0000", icon: "Y",  domain: "youtube.com" },
+  hotstar:  { cat: "Entertainment", color: "#1f80e0", icon: "H",  domain: "hotstar.com" },
+  notion:   { cat: "Productivity",  color: "#111",    icon: "N",  domain: "notion.so" },
+  linkedin: { cat: "Productivity",  color: "#0a66c2", icon: "in", domain: "linkedin.com" },
 };
+
+const CADENCE_DAYS = { monthly: 30, weekly: 7, yearly: 365, quarterly: 91 };
 
 export function cleanMerchant(raw) {
   let s = raw.toLowerCase();
@@ -71,7 +73,7 @@ export function cleanMerchant(raw) {
 
 function metaFor(name) {
   const key = Object.keys(KNOWN).find((k) => name.toLowerCase().includes(k));
-  return key ? KNOWN[key] : { cat: "Other", color: "#c9a24b", icon: name.slice(0, 1).toUpperCase() };
+  return key ? KNOWN[key] : { cat: "Other", color: "#7c3aed", icon: name.slice(0, 1).toUpperCase(), domain: null };
 }
 
 function detectCadence(dates) {
@@ -147,12 +149,18 @@ export function analyze(transactions, opts = {}) {
       ? { txt: `Silent hike: ₹${first.amount} → ₹${latest.amount} (+${hikePct}%)`, warn: true }
       : { txt: `Active · ${cadence.label} · fair price`, warn: false };
 
+    // predicted next charge (from last charge + cadence interval)
+    const intervalDays = CADENCE_DAYS[cadence.label] || 30;
+    const nextDate = new Date(latest.date.getTime() + intervalDays * 86400000);
+    const daysUntil = Math.round((nextDate - today) / 86400000);
+
     subscriptions.push({
-      name: titleCase(name), cat: meta.cat, color: meta.color, icon: meta.icon,
+      name: titleCase(name), cat: meta.cat, color: meta.color, icon: meta.icon, domain: meta.domain,
       price: monthly, cadence: cadence.label, annual: monthly * 12,
       score, type, action, actLabel, save, flag, hikePct: priceRose ? hikePct : 0,
       charges: txns.length, ageMonths,
       firstCharge: first.amount, latestCharge: latest.amount,
+      nextChargeDate: nextDate.toISOString().slice(0, 10), daysUntil,
       history: txns.map((t) => ({ date: t.date.toISOString().slice(0, 10), amount: t.amount })),
     });
   }

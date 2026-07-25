@@ -1,10 +1,12 @@
 import { useStore } from "../store";
 import TrendChart from "./TrendChart";
+import MerchantLogo from "./MerchantLogo";
 
 export default function Drawer() {
-  const { drawerSub: s, setDrawerSub } = useStore();
+  const { drawerSub: s, setDrawerSub, killSub, cancelled } = useStore();
   if (!s) return null;
   const close = () => setDrawerSub(null);
+  const isCancelled = cancelled.includes(s.name);
 
   // charge history as a mini trend series
   const series = s.history.map((h) => ({ month: h.date.slice(0, 7), total: h.amount }));
@@ -15,10 +17,10 @@ export default function Drawer() {
       <div className="drawer">
         <button className="x" onClick={close}>✕</button>
         <div className="dhead">
-          <div className="ic" style={{ background: s.color }}>{s.icon}</div>
+          <MerchantLogo domain={s.domain} icon={s.icon} color={s.color} size={56} radius={16} />
           <div>
             <h2>{s.name}</h2>
-            <div className="cat">{s.cat} · {s.cadence}</div>
+            <div className="cat">{s.cat} · {s.cadence} · next charge {new Date(s.nextChargeDate).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</div>
           </div>
         </div>
 
@@ -51,9 +53,13 @@ export default function Drawer() {
         </div>
 
         {s.save > 0 && (
-          <button className={`act ${s.action}`} style={{ marginTop: 22 }}>{s.actLabel}</button>
+          <button className={`act ${isCancelled ? "keep" : s.action}`} style={{ marginTop: 22 }}
+            disabled={isCancelled}
+            onClick={() => { if (s.action === "cancel") killSub(s); }}>
+            {isCancelled ? "✓ Killed" : s.actLabel}
+          </button>
         )}
-        {s.save > 0 && <div className="savenote">💰 Saves ₹{s.save.toLocaleString("en-IN")} / year</div>}
+        {s.save > 0 && !isCancelled && <div className="savenote">💰 Saves ₹{s.save.toLocaleString("en-IN")} / year</div>}
       </div>
     </>
   );

@@ -4,6 +4,7 @@ import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import Subscriptions from "./pages/Subscriptions";
 import Insights from "./pages/Insights";
+import Simulator from "./pages/Simulator";
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
       <Route path="/app" element={<AppShell />}>
         <Route index element={<Dashboard />} />
         <Route path="subscriptions" element={<Subscriptions />} />
+        <Route path="simulator" element={<Simulator />} />
         <Route path="insights" element={<Insights />} />
       </Route>
     </Routes>

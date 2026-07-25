@@ -4,6 +4,7 @@ import Topbar from "../components/Topbar";
 import CountUp from "../components/CountUp";
 import Gauge from "../components/Gauge";
 import Donut from "../components/Donut";
+import RenewalRadar from "../components/RenewalRadar";
 
 export default function Dashboard() {
   const { data, analyzeFile } = useStore();
@@ -67,6 +68,12 @@ export default function Dashboard() {
           <div className="pdesc">How much of your recurring spend is wasted</div>
           <Gauge value={summary.overallScore} />
         </div>
+      </div>
+
+      <div className="panel">
+        <h3>🛰️ Renewal Radar</h3>
+        <div className="pdesc">Upcoming charges predicted from each subscription's rhythm — cancel before they hit</div>
+        <RenewalRadar />
       </div>
     </>
   );
