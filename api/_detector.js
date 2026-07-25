@@ -177,6 +177,23 @@ export function analyze(transactions, opts = {}) {
     .sort((a, b) => a[0].localeCompare(b[0]))
     .map(([month, total]) => ({ month, total }));
 
+  // overlap / duplicate detection: 2+ subscriptions in the same category
+  const catGroups = {};
+  subscriptions.forEach((s) => (catGroups[s.cat] ||= []).push(s));
+  const overlaps = Object.entries(catGroups)
+    .filter(([cat, arr]) => arr.length >= 2 && cat !== "Other")
+    .map(([category, arr]) => {
+      const total = arr.reduce((a, s) => a + s.price, 0);
+      const keep = Math.min(...arr.map((s) => s.price));
+      return {
+        category, count: arr.length,
+        items: arr.map((s) => ({ name: s.name, price: s.price, domain: s.domain, icon: s.icon, color: s.color })),
+        monthlyWaste: total - keep, annualWaste: (total - keep) * 12,
+      };
+    })
+    .sort((a, b) => b.annualWaste - a.annualWaste);
+  const overlapAnnual = overlaps.reduce((a, o) => a + o.annualWaste, 0);
+
   subscriptions.sort((a, b) => b.score - a.score);
   const totalLeak = subscriptions.reduce((a, s) => a + s.save, 0);
   const monthlyRecurring = subscriptions.reduce((a, s) => a + s.price, 0);
@@ -195,7 +212,7 @@ export function analyze(transactions, opts = {}) {
       overallScore,
       byCategory: Object.entries(byCat).map(([label, value]) => ({ label, value })),
       scannedTxns: transactions.length,
-      trend,
+      trend, overlaps, overlapAnnual,
     },
   };
 }

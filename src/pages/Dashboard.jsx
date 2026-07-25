@@ -32,7 +32,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Topbar k={`${profile.greeting}, ${profile.name}`} title="Overview" />
+      <Topbar k={`${profile.greeting}, ${profile.name}`} title="Overview" share />
 
       <input ref={fileRef} type="file" accept=".csv" hidden onChange={(e) => analyzeFile(e.target.files[0])} />
 

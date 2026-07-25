@@ -5,8 +5,8 @@ export default function Logo({ showText = true }) {
       <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="zg" x1="0" y1="0" x2="40" y2="40">
-            <stop offset="0" stopColor="#7c3aed" />
-            <stop offset="1" stopColor="#db2777" />
+            <stop offset="0" stopColor="#f9a825" />
+            <stop offset="1" stopColor="#e23e2e" />
           </linearGradient>
         </defs>
         <rect width="40" height="40" rx="12" fill="url(#zg)" />
@@ -15,7 +15,7 @@ export default function Logo({ showText = true }) {
         {/* bite taken out (the "leak") */}
         <circle cx="29" cy="14" r="6" fill="url(#zg)" />
         {/* Z */}
-        <path d="M15 16h9l-8.5 8H24" stroke="#6d28d9" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        <path d="M15 16h9l-8.5 8H24" stroke="#e23e2e" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
       </svg>
       {showText && <span>Zombii</span>}
     </div>

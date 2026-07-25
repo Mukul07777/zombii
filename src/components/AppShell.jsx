@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import Logo from "./Logo";
 import Drawer from "./Drawer";
 import ChatWidget from "./ChatWidget";
+import Mascot from "./Mascot";
 import { useStore } from "../store";
 
 const LINKS = [
@@ -29,6 +30,7 @@ export default function AppShell() {
           </NavLink>
         ))}
         <div className="side-spacer" />
+        <Mascot />
         {reclaimed > 0 ? (
           <div className="side-card" style={{ background: "var(--grad)", color: "#fff", border: "none" }}>
             <div className="t" style={{ color: "rgba(255,255,255,.85)" }}>🎉 Reclaimed · {cancelled.length} killed</div>

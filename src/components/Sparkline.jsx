@@ -1,5 +1,5 @@
 // Tiny inline sparkline (area + line) for KPI cards.
-export default function Sparkline({ data, color = "#7c3aed", w = 120, h = 38 }) {
+export default function Sparkline({ data, color = "#f7941d", w = 120, h = 38 }) {
   if (!data?.length) return null;
   const max = Math.max(...data), min = Math.min(...data);
   const span = max - min || 1;

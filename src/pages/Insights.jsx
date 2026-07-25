@@ -3,6 +3,7 @@ import Topbar from "../components/Topbar";
 import TrendChart from "../components/TrendChart";
 import Donut from "../components/Donut";
 import CountUp from "../components/CountUp";
+import OverlapPanel from "../components/OverlapPanel";
 
 export default function Insights() {
   const { data } = useStore();
@@ -35,6 +36,12 @@ export default function Insights() {
             <div style={{ color: "var(--muted)", fontSize: 13, marginTop: 4 }}>{c.sub}</div>
           </div>
         ))}
+      </div>
+
+      <div className="panel" style={{ marginBottom: 24 }}>
+        <h3>🔀 Overlap detector <span style={{ fontSize: 13, fontWeight: 500, color: "var(--muted)" }}>— duplicate services doing the same job</span></h3>
+        <div className="pdesc">Extra money nobody else's tool catches — you're double-paying within a category</div>
+        <OverlapPanel />
       </div>
 
       <div className="panel" style={{ marginBottom: 24 }}>

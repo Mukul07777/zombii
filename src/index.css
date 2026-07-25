@@ -223,6 +223,29 @@ a{color:inherit;text-decoration:none;}
 
 footer{text-align:center;color:var(--muted);font-size:13px;margin-top:56px;}
 
+/* overlap detector */
+.overlaps{display:flex;flex-direction:column;gap:12px;}
+.overlap{border:1px solid var(--line);border-radius:16px;padding:16px;background:var(--surface-2);}
+.overlap-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:12px;}
+.overlap-cat{font-family:'Poppins';font-weight:700;font-size:15px;}
+.overlap-sub{color:var(--muted);font-size:12.5px;margin-top:2px;}
+.overlap-save{font-family:'Poppins';font-weight:800;font-size:18px;color:var(--primary);white-space:nowrap;}
+.overlap-save span{font-size:12px;color:var(--muted);}
+.overlap-logos{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.overlap-tip{color:var(--muted);font-size:12.5px;margin-left:6px;}
+
+/* mascot */
+.mascot{display:flex;align-items:center;gap:11px;padding:12px 14px;border-radius:16px;border:1px solid var(--line);background:var(--surface-2);margin-bottom:10px;}
+.mascot-face{font-size:30px;animation:bob 2.4s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-4px) rotate(3deg);}}
+.mascot.happy{border-color:rgba(53,192,125,.4);background:rgba(53,192,125,.08);}
+.mascot.alarm{border-color:rgba(240,90,63,.4);background:rgba(240,90,63,.08);}
+.mascot.alarm .mascot-face{animation:shake .5s ease-in-out infinite;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-3px);}75%{transform:translateX(3px);}}
+.mascot-txt{display:flex;flex-direction:column;line-height:1.15;}
+.mascot-txt b{font-family:'Poppins';font-weight:700;font-size:14px;}
+.mascot-txt small{color:var(--muted);font-size:12px;}
+
 /* sample picker */
 .samplepicker{margin-bottom:16px;}
 .sp-label{font-size:12.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--primary);margin-bottom:10px;font-family:'Poppins';}

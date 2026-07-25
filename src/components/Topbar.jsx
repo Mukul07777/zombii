@@ -1,7 +1,8 @@
 import { useRef } from "react";
 import { useStore } from "../store";
+import { downloadLeakCard } from "../shareCard";
 
-export default function Topbar({ k, title }) {
+export default function Topbar({ k, title, share }) {
   const { data, analyzeFile } = useStore();
   const fileRef = useRef();
   const profile = data?.profile || { name: "You" };
@@ -14,6 +15,9 @@ export default function Topbar({ k, title }) {
         <h1>{title}</h1>
       </div>
       <div className="actions">
+        {share && data && (
+          <button className="btn btn-out btn-sm" onClick={() => downloadLeakCard(data.summary, profile.name)}>📸 Share card</button>
+        )}
         <button className="btn btn-grad btn-sm" onClick={() => fileRef.current.click()}>⬆ Scan statement</button>
         <div className="userchip">
           <div className="av">{profile.name[0]}</div>

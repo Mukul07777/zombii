@@ -28,6 +28,13 @@ export default function Drawer() {
     setDrafting(false);
   }
   function copyEmail() { navigator.clipboard?.writeText(email); setCopied(true); }
+  function sendEmail() {
+    const m = email.match(/subject:\s*(.*)/i);
+    const subject = m ? m[1].trim() : `Cancellation request — ${s.name}`;
+    const bodyText = email.replace(/subject:\s*.*\n?/i, "").trim();
+    const to = s.domain ? `support@${s.domain}` : "";
+    window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+  }
 
   return (
     <>
@@ -85,7 +92,10 @@ export default function Drawer() {
         {email && (
           <div className="emailbox">
             <textarea value={email} readOnly rows={9} />
-            <button className="copybtn" onClick={copyEmail}>{copied ? "✓ Copied" : "Copy email"}</button>
+            <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+              <button className="copybtn" style={{ flex: 1 }} onClick={sendEmail}>✉ Send in mail app</button>
+              <button className="copybtn" style={{ background: "var(--surface)", color: "var(--ink)", border: "1px solid var(--line)" }} onClick={copyEmail}>{copied ? "✓" : "Copy"}</button>
+            </div>
           </div>
         )}
       </div>
