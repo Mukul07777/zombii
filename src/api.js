@@ -20,3 +20,14 @@ export async function analyzeCSV(file) {
   if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || "Analyze failed");
   return r.json();
 }
+
+// Agentic parse: any raw statement / SMS / email text → structured → analysed.
+export async function analyzeText(text, source = "text") {
+  const r = await fetch("/api/parse", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text, source }),
+  });
+  if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || "Parsing failed");
+  return r.json();
+}

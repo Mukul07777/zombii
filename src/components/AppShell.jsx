@@ -4,6 +4,7 @@ import Logo from "./Logo";
 import Drawer from "./Drawer";
 import ChatWidget from "./ChatWidget";
 import Mascot from "./Mascot";
+import Scanning from "./Scanning";
 import { useStore } from "../store";
 
 const LINKS = [
@@ -61,6 +62,7 @@ export default function AppShell() {
 
       {drawerSub && <Drawer />}
       {data && <ChatWidget />}
+      <Scanning />
     </div>
   );
 }

@@ -88,6 +88,19 @@ function detectCadence(dates) {
   return null;
 }
 
+// Detection confidence (0-100): more charges + more regular gaps = higher.
+function confidenceOf(dates) {
+  if (dates.length < 2) return 0;
+  const gaps = [];
+  for (let i = 1; i < dates.length; i++) gaps.push((dates[i] - dates[i - 1]) / 86400000);
+  const avg = gaps.reduce((a, b) => a + b, 0) / gaps.length || 1;
+  const variance = gaps.reduce((a, g) => a + (g - avg) ** 2, 0) / gaps.length;
+  const cv = Math.sqrt(variance) / avg;          // coefficient of variation
+  const regularity = Math.max(0, 1 - cv);         // 1 = perfectly regular
+  const volume = Math.min(1, (dates.length - 1) / 5); // more charges = surer
+  return Math.round(Math.min(99, 55 + (regularity * 0.55 + volume * 0.45) * 44));
+}
+
 const titleCase = (s) => s.replace(/\b\w/g, (c) => c.toUpperCase());
 
 export function analyze(transactions, opts = {}) {
@@ -161,6 +174,7 @@ export function analyze(transactions, opts = {}) {
       charges: txns.length, ageMonths,
       firstCharge: first.amount, latestCharge: latest.amount,
       nextChargeDate: nextDate.toISOString().slice(0, 10), daysUntil,
+      confidence: confidenceOf(dates),
       history: txns.map((t) => ({ date: t.date.toISOString().slice(0, 10), amount: t.amount })),
     });
   }

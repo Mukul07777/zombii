@@ -1,4 +1,3 @@
-import { useRef, useState } from "react";
 import { useStore } from "../store";
 import Topbar from "../components/Topbar";
 import CountUp from "../components/CountUp";
@@ -9,12 +8,11 @@ import TrendChart from "../components/TrendChart";
 import Sparkline from "../components/Sparkline";
 import MerchantLogo from "../components/MerchantLogo";
 import SamplePicker from "../components/SamplePicker";
+import ImportPanel from "../components/ImportPanel";
 
 export default function Dashboard() {
-  const { data, analyzeFile } = useStore();
+  const { data } = useStore();
   const { summary, subscriptions, profile } = data;
-  const [over, setOver] = useState(false);
-  const fileRef = useRef();
 
   const trendVals = summary.trend.map((t) => t.total);
   const kpis = [
@@ -33,8 +31,6 @@ export default function Dashboard() {
   return (
     <>
       <Topbar k={`${profile.greeting}, ${profile.name}`} title="Overview" share />
-
-      <input ref={fileRef} type="file" accept=".csv" hidden onChange={(e) => analyzeFile(e.target.files[0])} />
 
       {/* KPI ROW */}
       <div className="kpirow">
@@ -103,14 +99,7 @@ export default function Dashboard() {
       </div>
 
       <SamplePicker />
-
-      <div className={`drop ${over ? "over" : ""}`}
-        onClick={() => fileRef.current.click()}
-        onDragOver={(e) => { e.preventDefault(); setOver(true); }}
-        onDragLeave={() => setOver(false)}
-        onDrop={(e) => { e.preventDefault(); setOver(false); analyzeFile(e.dataTransfer.files[0]); }}>
-        ⬆ Drag &amp; drop your own bank statement (.csv) — columns: date, description, amount
-      </div>
+      <ImportPanel />
     </>
   );
 }

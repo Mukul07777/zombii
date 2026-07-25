@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { fetchDemo, fetchSamples, analyzeCSV } from "./api";
+import { fetchDemo, fetchSamples, analyzeCSV, analyzeText } from "./api";
 import { fireConfetti } from "./confetti";
 
 const Ctx = createContext(null);
@@ -14,6 +14,7 @@ export function StoreProvider({ children }) {
   const [chatOpen, setChatOpen] = useState(false);
   const [samples, setSamples] = useState([]);
   const [persona, setPersona] = useState("professional");
+  const [scanning, setScanning] = useState(false);
   const [theme, setTheme] = useState(() => {
     try { return localStorage.getItem("zombii-theme") || "dark"; } catch { return "dark"; }
   });
@@ -36,9 +37,18 @@ export function StoreProvider({ children }) {
 
   async function analyzeFile(file) {
     if (!file) return;
-    setError(null); setData(null); setCancelled([]); setReclaimed(0); setPersona("custom");
+    setError(null); setData(null); setCancelled([]); setReclaimed(0); setPersona("custom"); setScanning(true);
     try { setData(await analyzeCSV(file)); }
     catch (e) { setError(e.message); }
+    finally { setScanning(false); }
+  }
+
+  async function importText(text, source) {
+    if (!text?.trim()) return;
+    setError(null); setData(null); setCancelled([]); setReclaimed(0); setPersona("custom"); setScanning(true);
+    try { setData(await analyzeText(text, source)); }
+    catch (e) { setError(e.message); }
+    finally { setScanning(false); }
   }
 
   function killSub(sub) {
@@ -56,6 +66,7 @@ export function StoreProvider({ children }) {
       drawerSub, setDrawerSub, cancelled, reclaimed, killSub,
       chatOpen, setChatOpen,
       samples, persona, loadSample,
+      scanning, importText,
     }}>
       {children}
     </Ctx.Provider>

@@ -51,7 +51,7 @@ export default function SubCard({ s, index, onOpen }) {
       </div>
       <div className="leakbar"><i style={{ width: w + "%", background: bar }} /></div>
       <div className="leakrow">
-        <span>Leak score</span>
+        <span>Leak score {s.confidence != null && <em style={{ fontStyle: "normal", opacity: .7 }}>· {s.confidence}% match</em>}</span>
         <span style={{ color: bar, fontWeight: 600 }}>{s.score}/100</span>
       </div>
       <button className={`act ${isCancelled ? "keep" : s.action}`} onClick={onAction} disabled={isCancelled}>

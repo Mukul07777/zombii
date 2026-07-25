@@ -58,6 +58,12 @@ export default function Drawer() {
           <div className="dmetric"><div className="n" style={{ color: s.score > 70 ? "var(--red)" : s.score > 45 ? "var(--amber)" : "var(--green)" }}>{s.score}</div><div className="t">Leak score</div></div>
           <div className="dmetric"><div className="n">₹{s.annual.toLocaleString("en-IN")}</div><div className="t">Per year</div></div>
         </div>
+        {s.confidence != null && (
+          <div className="confbar">
+            <div className="confbar-top"><span>Detection confidence</span><b>{s.confidence}%</b></div>
+            <div className="confbar-track"><i style={{ width: s.confidence + "%" }} /></div>
+          </div>
+        )}
 
         <div className="dsub">Charge history</div>
         <TrendChart data={series} height={160} />

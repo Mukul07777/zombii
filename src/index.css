@@ -223,6 +223,40 @@ a{color:inherit;text-decoration:none;}
 
 footer{text-align:center;color:var(--muted);font-size:13px;margin-top:56px;}
 
+/* import panel */
+.import{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow-sm);margin-bottom:22px;}
+.import-tabs{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.import-tab{background:var(--surface-2);border:1px solid var(--line);color:var(--muted);padding:9px 15px;border-radius:100px;font-size:13.5px;font-weight:600;font-family:'Poppins';cursor:pointer;transition:.18s;}
+.import-tab.on{background:var(--grad);color:#fff;border-color:transparent;}
+.import-ai{margin-left:auto;font-size:12px;font-weight:700;color:var(--primary);font-family:'Poppins';}
+.paste{display:flex;flex-direction:column;gap:12px;}
+.paste textarea{width:100%;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:14px;color:var(--ink);font-family:'Inter';font-size:14px;line-height:1.5;resize:vertical;outline:none;}
+.paste textarea:focus{border-color:var(--primary);}
+.paste .btn{align-self:flex-start;}
+
+/* confidence bar (drawer) */
+.confbar{margin-bottom:18px;}
+.confbar-top{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px;}
+.confbar-top b{color:var(--primary);font-family:'Poppins';}
+.confbar-track{height:8px;border-radius:100px;background:var(--bg-tint);overflow:hidden;}
+.confbar-track i{display:block;height:100%;border-radius:100px;background:var(--grad);}
+
+/* scanning overlay */
+.scan-back{position:fixed;inset:0;z-index:70;background:rgba(10,10,14,.72);backdrop-filter:blur(6px);display:grid;place-items:center;animation:fade .25s;}
+.scan-card{width:min(420px,92vw);background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:32px;box-shadow:var(--shadow);text-align:left;}
+.scan-mascot{font-size:44px;text-align:center;animation:bob 1.4s ease-in-out infinite;}
+.scan-title{text-align:center;font-family:'Bricolage Grotesque','Poppins';font-weight:800;font-size:22px;margin:8px 0 20px;letter-spacing:-.6px;}
+.scan-steps{display:flex;flex-direction:column;gap:9px;margin-bottom:20px;}
+.scan-step{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);transition:.2s;}
+.scan-step .dot{width:20px;text-align:center;}
+.scan-step.active{color:var(--ink);font-weight:600;}
+.scan-step.active .dot{color:var(--primary);animation:spin 1s linear infinite;display:inline-block;}
+.scan-step.done{color:var(--green);}
+@keyframes spin{to{transform:rotate(360deg);}}
+.scan-track{height:10px;border-radius:100px;background:var(--bg-tint);overflow:hidden;}
+.scan-track i{display:block;height:100%;border-radius:100px;background:var(--grad);transition:width .5s cubic-bezier(.2,.8,.2,1);}
+.scan-pct{text-align:right;font-family:'Poppins';font-weight:700;font-size:13px;color:var(--primary);margin-top:6px;}
+
 /* overlap detector */
 .overlaps{display:flex;flex-direction:column;gap:12px;}
 .overlap{border:1px solid var(--line);border-radius:16px;padding:16px;background:var(--surface-2);}
