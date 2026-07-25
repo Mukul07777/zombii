@@ -1,4 +1,4 @@
-const COLORS = ["#7c3aed", "#db2777", "#4f46e5", "#f59e0b", "#10b981", "#f43f5e"];
+const COLORS = ["#f7941d", "#e23e2e", "#f9c74f", "#f0553a", "#35c07d", "#b5651d"];
 
 // Pure-SVG donut with legend
 export default function Donut({ data }) {

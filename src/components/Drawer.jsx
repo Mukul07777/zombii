@@ -1,15 +1,33 @@
+import { useState } from "react";
 import { useStore } from "../store";
 import TrendChart from "./TrendChart";
 import MerchantLogo from "./MerchantLogo";
 
 export default function Drawer() {
   const { drawerSub: s, setDrawerSub, killSub, cancelled } = useStore();
+  const [email, setEmail] = useState("");
+  const [drafting, setDrafting] = useState(false);
+  const [copied, setCopied] = useState(false);
   if (!s) return null;
   const close = () => setDrawerSub(null);
   const isCancelled = cancelled.includes(s.name);
 
   // charge history as a mini trend series
   const series = s.history.map((h) => ({ month: h.date.slice(0, 7), total: h.amount }));
+
+  async function draftEmail() {
+    setDrafting(true); setEmail(""); setCopied(false);
+    try {
+      const r = await fetch("/api/draft", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sub: { name: s.name, price: s.price, cadence: s.cadence, type: s.type, flag: s.flag } }),
+      });
+      const j = await r.json();
+      setEmail(j.email || j.error || "Could not draft.");
+    } catch { setEmail("⚠ Couldn't reach the AI. Run `vercel dev` with GROQ_API_KEY set."); }
+    setDrafting(false);
+  }
+  function copyEmail() { navigator.clipboard?.writeText(email); setCopied(true); }
 
   return (
     <>
@@ -60,6 +78,16 @@ export default function Drawer() {
           </button>
         )}
         {s.save > 0 && !isCancelled && <div className="savenote">💰 Saves ₹{s.save.toLocaleString("en-IN")} / year</div>}
+
+        <button className="act downgrade" style={{ marginTop: 12 }} onClick={draftEmail} disabled={drafting}>
+          {drafting ? "✍ Drafting…" : "✍ Draft cancellation email (AI)"}
+        </button>
+        {email && (
+          <div className="emailbox">
+            <textarea value={email} readOnly rows={9} />
+            <button className="copybtn" onClick={copyEmail}>{copied ? "✓ Copied" : "Copy email"}</button>
+          </div>
+        )}
       </div>
     </>
   );

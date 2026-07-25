@@ -6,7 +6,7 @@ export function fireConfetti() {
   canvas.height = window.innerHeight;
   document.body.appendChild(canvas);
   const ctx = canvas.getContext("2d");
-  const colors = ["#7c3aed", "#db2777", "#4f46e5", "#f59e0b", "#10b981", "#f43f5e"];
+  const colors = ["#f7941d", "#e23e2e", "#f9c74f", "#f0553a", "#35c07d", "#f9a825"];
   const N = 140;
   const parts = Array.from({ length: N }, () => ({
     x: canvas.width / 2,

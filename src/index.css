@@ -1,46 +1,47 @@
 :root{
-  --bg:#f5f5fb;
-  --bg-tint:#efebfa;
-  --surface:#ffffff;
-  --surface-2:#faf9ff;
-  --ink:#1a1636;
-  --ink-soft:#3a3560;
-  --muted:#807ca0;
-  --line:rgba(26,22,54,.09);
-  --primary:#6d28d9;
-  --primary-2:#4f46e5;
-  --pink:#db2777;
-  --grad:linear-gradient(135deg,#7c3aed,#4f46e5);
-  --grad-hot:linear-gradient(135deg,#7c3aed,#db2777);
-  --red:#f43f5e;
-  --amber:#f59e0b;
-  --green:#10b981;
-  --shadow:0 24px 60px -26px rgba(80,50,160,.42);
-  --shadow-sm:0 12px 30px -16px rgba(80,50,160,.30);
-  --side:248px;
-}
-body.dark{
-  --bg:#0d0e1c;
-  --bg-tint:#15132a;
-  --surface:#181a30;
-  --surface-2:#1f2140;
-  --ink:#f3f2fb;
-  --ink-soft:#c9c6e6;
-  --muted:#9b98c0;
+  /* charcoal + orange premium (default) */
+  --bg:#141518;
+  --bg-tint:#23252d;
+  --surface:#1e2025;
+  --surface-2:#26282e;
+  --ink:#f6f6f8;
+  --ink-soft:#d4d5db;
+  --muted:#93949c;
   --line:rgba(255,255,255,.09);
-  --shadow:0 24px 60px -26px rgba(0,0,0,.6);
-  --shadow-sm:0 12px 30px -16px rgba(0,0,0,.5);
+  --primary:#f7941d;
+  --primary-2:#e23e2e;
+  --pink:#e23e2e;
+  --grad:linear-gradient(135deg,#f9a825,#f7941d 45%,#e23e2e);
+  --grad-hot:linear-gradient(135deg,#f7941d,#e23e2e);
+  --red:#f05a3f;
+  --amber:#f7941d;
+  --green:#35c07d;
+  --shadow:0 26px 60px -26px rgba(0,0,0,.7);
+  --shadow-sm:0 14px 34px -18px rgba(0,0,0,.6);
+  --side:250px;
+}
+body.light{
+  --bg:#f5f5f8;
+  --bg-tint:#fdeede;
+  --surface:#ffffff;
+  --surface-2:#f7f6fb;
+  --ink:#191a1f;
+  --ink-soft:#3a3b42;
+  --muted:#7a7b84;
+  --line:rgba(20,20,25,.10);
+  --shadow:0 24px 60px -26px rgba(120,80,20,.30);
+  --shadow-sm:0 12px 30px -16px rgba(120,80,20,.22);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
   font-family:'Inter',-apple-system,sans-serif;color:var(--ink);
   background:
-    radial-gradient(800px 500px at 100% -5%, var(--bg-tint), transparent 55%),
-    radial-gradient(700px 500px at -5% 100%, var(--bg-tint), transparent 55%),
+    radial-gradient(820px 520px at 100% -8%, rgba(247,148,29,.16), transparent 58%),
+    radial-gradient(720px 520px at -8% 108%, rgba(226,62,46,.12), transparent 58%),
     var(--bg);
   min-height:100vh;-webkit-font-smoothing:antialiased;transition:background .35s,color .35s;
 }
-h1,h2,h3,h4,.display{font-family:'Poppins',sans-serif;}
+h1,h2,h3,h4,.display{font-family:'Bricolage Grotesque','Poppins',sans-serif;letter-spacing:-.5px;}
 a{color:inherit;text-decoration:none;}
 .fadein{animation:fadein .45s ease both;}
 @keyframes fadein{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
@@ -80,8 +81,8 @@ a{color:inherit;text-decoration:none;}
 
 /* topbar inside main */
 .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap;}
-.topbar .greet .k{font-size:12.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--primary);}
-.topbar .greet h1{font-size:clamp(24px,3.2vw,34px);font-weight:800;letter-spacing:-1.2px;margin-top:4px;}
+.topbar .greet .k{font-size:12.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--primary);}
+.topbar .greet h1{font-size:clamp(30px,4vw,46px);font-weight:800;letter-spacing:-1.6px;margin-top:4px;}
 .topbar .actions{display:flex;gap:10px;align-items:center;}
 .userchip{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:100px;padding:6px 14px 6px 6px;box-shadow:var(--shadow-sm);}
 .userchip .av{width:38px;height:38px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-family:'Poppins';font-weight:700;}
@@ -221,6 +222,10 @@ a{color:inherit;text-decoration:none;}
 .tlrow .up{color:var(--red);font-size:12px;font-weight:700;}
 
 footer{text-align:center;color:var(--muted);font-size:13px;margin-top:56px;}
+
+.emailbox{margin-top:14px;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:12px;}
+.emailbox textarea{width:100%;border:none;background:transparent;color:var(--ink);font-family:'Inter';font-size:13px;line-height:1.55;resize:vertical;outline:none;}
+.copybtn{margin-top:8px;border:none;background:var(--grad);color:#fff;font-family:'Poppins';font-weight:700;font-size:13px;padding:9px 16px;border-radius:10px;cursor:pointer;}
 
 /* ---------- PREMIUM DASHBOARD ---------- */
 .kpirow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px;}

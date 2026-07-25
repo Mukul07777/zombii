@@ -15,12 +15,12 @@ export default function TrendChart({ data, height = 240 }) {
     <svg viewBox={`0 0 ${W} ${H}`} width="100%" preserveAspectRatio="xMidYMid meet">
       <defs>
         <linearGradient id="areaG" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#7c3aed" stopOpacity="0.35" />
-          <stop offset="1" stopColor="#7c3aed" stopOpacity="0" />
+          <stop offset="0" stopColor="#f7941d" stopOpacity="0.38" />
+          <stop offset="1" stopColor="#f7941d" stopOpacity="0" />
         </linearGradient>
         <linearGradient id="lineG" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stopColor="#7c3aed" />
-          <stop offset="1" stopColor="#db2777" />
+          <stop offset="0" stopColor="#f9a825" />
+          <stop offset="1" stopColor="#e23e2e" />
         </linearGradient>
       </defs>
       {[0.25, 0.5, 0.75, 1].map((f, i) => (

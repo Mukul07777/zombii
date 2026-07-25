@@ -13,7 +13,7 @@ export function StoreProvider({ children }) {
   const [reclaimed, setReclaimed] = useState(0);     // running ₹ reclaimed
   const [chatOpen, setChatOpen] = useState(false);
   const [theme, setTheme] = useState(() => {
-    try { return localStorage.getItem("zombii-theme") || "light"; } catch { return "light"; }
+    try { return localStorage.getItem("zombii-theme") || "dark"; } catch { return "dark"; }
   });
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export function StoreProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    document.body.classList.toggle("dark", theme === "dark");
+    document.body.classList.toggle("light", theme === "light");
     try { localStorage.setItem("zombii-theme", theme); } catch {}
   }, [theme]);
 

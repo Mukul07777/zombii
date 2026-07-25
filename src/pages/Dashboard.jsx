@@ -17,10 +17,10 @@ export default function Dashboard() {
 
   const trendVals = summary.trend.map((t) => t.total);
   const kpis = [
-    { t: "Annual leakage", v: summary.totalLeak, money: true, delta: "+ leaking", down: true, color: "#f43f5e", spark: trendVals },
-    { t: "Monthly recurring", v: summary.monthlyRecurring, money: true, delta: `${summary.count} active`, color: "#7c3aed", spark: trendVals },
-    { t: "Zombies found", v: summary.zombies, delta: "cancel now", down: true, color: "#f59e0b", spark: [2, 3, 2, 4, 3, summary.zombies + 2, summary.zombies] },
-    { t: "Leak score", v: summary.overallScore, suffix: "/100", delta: summary.overallScore > 45 ? "needs work" : "healthy", color: "#10b981", spark: [20, 34, 28, 40, 36, summary.overallScore] },
+    { t: "Annual leakage", v: summary.totalLeak, money: true, delta: "+ leaking", down: true, color: "#e23e2e", spark: trendVals },
+    { t: "Monthly recurring", v: summary.monthlyRecurring, money: true, delta: `${summary.count} active`, color: "#f7941d", spark: trendVals },
+    { t: "Zombies found", v: summary.zombies, delta: "cancel now", down: true, color: "#f0553a", spark: [2, 3, 2, 4, 3, summary.zombies + 2, summary.zombies] },
+    { t: "Leak score", v: summary.overallScore, suffix: "/100", delta: summary.overallScore > 45 ? "needs work" : "healthy", color: "#35c07d", spark: [20, 34, 28, 40, 36, summary.overallScore] },
   ];
 
   // recent charges feed (flatten histories)
