@@ -223,6 +223,40 @@ a{color:inherit;text-decoration:none;}
 
 footer{text-align:center;color:var(--muted);font-size:13px;margin-top:56px;}
 
+/* sample picker */
+.samplepicker{margin-bottom:16px;}
+.sp-label{font-size:12.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--primary);margin-bottom:10px;font-family:'Poppins';}
+.sp-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.sp-card{display:flex;align-items:center;gap:12px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;cursor:pointer;transition:.18s;box-shadow:var(--shadow-sm);color:var(--ink);font-family:'Inter';}
+.sp-card:hover{transform:translateY(-2px);border-color:var(--primary);}
+.sp-card.on{border-color:var(--primary);background:linear-gradient(135deg,rgba(247,148,29,.14),rgba(226,62,46,.10));}
+.sp-ic{font-size:24px;}
+.sp-txt{display:flex;flex-direction:column;}
+.sp-txt b{font-family:'Poppins';font-weight:700;font-size:14px;}
+.sp-txt small{color:var(--muted);font-size:12px;margin-top:1px;}
+
+/* landing: how it works + features */
+.section{margin:64px 0;}
+.section .sk{text-align:center;font-size:13px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--primary);margin-bottom:10px;font-family:'Poppins';}
+.section h2{text-align:center;font-size:clamp(30px,4.4vw,48px);font-weight:800;letter-spacing:-1.6px;margin-bottom:12px;}
+.section .lead{text-align:center;color:var(--muted);font-size:17px;max-width:600px;margin:0 auto 40px;}
+.pipe{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;position:relative;}
+.pipe .step{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px 22px;box-shadow:var(--shadow-sm);position:relative;}
+.pipe .step .no{font-family:'Bricolage Grotesque';font-weight:800;font-size:15px;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--grad);color:#fff;margin-bottom:16px;}
+.pipe .step h4{font-family:'Poppins';font-size:17px;font-weight:700;margin-bottom:6px;}
+.pipe .step p{color:var(--muted);font-size:13.5px;line-height:1.5;}
+.pipe .step .ar{position:absolute;right:-13px;top:50%;transform:translateY(-50%);color:var(--primary);font-size:22px;z-index:2;}
+.featgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.feat{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow-sm);transition:.18s;}
+.feat:hover{transform:translateY(-4px);border-color:var(--primary);}
+.feat .fi{font-size:26px;margin-bottom:12px;}
+.feat h4{font-family:'Poppins';font-size:16px;font-weight:700;margin-bottom:6px;}
+.feat p{color:var(--muted);font-size:13.5px;line-height:1.5;}
+.ctaband{margin:64px 0 20px;text-align:center;background:var(--grad);border-radius:28px;padding:56px 30px;color:#fff;box-shadow:var(--shadow);}
+.ctaband h2{font-family:'Bricolage Grotesque';font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-1.4px;margin-bottom:10px;}
+.ctaband p{opacity:.9;font-size:17px;margin-bottom:26px;}
+.ctaband .btn{background:#fff;color:#1a1a1a;}
+
 .emailbox{margin-top:14px;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:12px;}
 .emailbox textarea{width:100%;border:none;background:transparent;color:var(--ink);font-family:'Inter';font-size:13px;line-height:1.55;resize:vertical;outline:none;}
 .copybtn{margin-top:8px;border:none;background:var(--grad);color:#fff;font-family:'Poppins';font-weight:700;font-size:13px;padding:9px 16px;border-radius:10px;cursor:pointer;}
@@ -290,6 +324,9 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:56px;}
   .grid,.grid3{grid-template-columns:1fr;}.stats{grid-template-columns:repeat(2,1fr);}
   .kpirow{grid-template-columns:repeat(2,1fr);}
   .dashgrid,.dashgrid2{grid-template-columns:1fr;}
+  .sp-cards{grid-template-columns:1fr;}
+  .pipe,.featgrid{grid-template-columns:1fr;}
+  .pipe .step .ar{display:none;}
   .sidebar{position:fixed;left:-260px;z-index:60;transition:left .3s;}
   .sidebar.open{left:0;}
   .lnav .links{display:none;}

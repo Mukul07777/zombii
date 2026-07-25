@@ -8,6 +8,7 @@ import RenewalRadar from "../components/RenewalRadar";
 import TrendChart from "../components/TrendChart";
 import Sparkline from "../components/Sparkline";
 import MerchantLogo from "../components/MerchantLogo";
+import SamplePicker from "../components/SamplePicker";
 
 export default function Dashboard() {
   const { data, analyzeFile } = useStore();
@@ -100,6 +101,8 @@ export default function Dashboard() {
           <Donut data={summary.byCategory} />
         </div>
       </div>
+
+      <SamplePicker />
 
       <div className={`drop ${over ? "over" : ""}`}
         onClick={() => fileRef.current.click()}

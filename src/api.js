@@ -1,8 +1,13 @@
-// Same-origin on Vercel: /api/demo and /api/analyze are serverless functions.
-export async function fetchDemo() {
-  const r = await fetch("/api/demo");
+// Same-origin on Vercel: /api/* are serverless functions.
+export async function fetchDemo(profile = "professional") {
+  const r = await fetch(`/api/demo?profile=${encodeURIComponent(profile)}`);
   if (!r.ok) throw new Error("Could not load demo data");
   return r.json();
+}
+
+export async function fetchSamples() {
+  try { const r = await fetch("/api/samples"); return (await r.json()).samples; }
+  catch { return []; }
 }
 
 export async function analyzeCSV(file) {
