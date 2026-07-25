@@ -5,75 +5,108 @@ import CountUp from "../components/CountUp";
 import Gauge from "../components/Gauge";
 import Donut from "../components/Donut";
 import RenewalRadar from "../components/RenewalRadar";
+import TrendChart from "../components/TrendChart";
+import Sparkline from "../components/Sparkline";
+import MerchantLogo from "../components/MerchantLogo";
 
 export default function Dashboard() {
   const { data, analyzeFile } = useStore();
-  const { summary, profile } = data;
+  const { summary, subscriptions, profile } = data;
   const [over, setOver] = useState(false);
   const fileRef = useRef();
 
-  const stats = [
-    { ico: "🔁", n: summary.count, t: "Recurring subscriptions" },
-    { ico: "🧟", n: summary.zombies, t: "Zombie / unused" },
-    { ico: "📈", n: summary.hikes, t: "Silent price hikes" },
-    { ico: "💰", n: summary.totalLeak, t: "Reclaimable / year", money: true },
+  const trendVals = summary.trend.map((t) => t.total);
+  const kpis = [
+    { t: "Annual leakage", v: summary.totalLeak, money: true, delta: "+ leaking", down: true, color: "#f43f5e", spark: trendVals },
+    { t: "Monthly recurring", v: summary.monthlyRecurring, money: true, delta: `${summary.count} active`, color: "#7c3aed", spark: trendVals },
+    { t: "Zombies found", v: summary.zombies, delta: "cancel now", down: true, color: "#f59e0b", spark: [2, 3, 2, 4, 3, summary.zombies + 2, summary.zombies] },
+    { t: "Leak score", v: summary.overallScore, suffix: "/100", delta: summary.overallScore > 45 ? "needs work" : "healthy", color: "#10b981", spark: [20, 34, 28, 40, 36, summary.overallScore] },
   ];
+
+  // recent charges feed (flatten histories)
+  const activity = subscriptions
+    .flatMap((s) => s.history.map((h) => ({ ...h, name: s.name, domain: s.domain, icon: s.icon, color: s.color })))
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 6);
 
   return (
     <>
-      <Topbar k={`${profile.greeting}, ${profile.name}`} title="Your money, decoded" />
+      <Topbar k={`${profile.greeting}, ${profile.name}`} title="Overview" />
 
-      <div className="leakbanner">
-        <div className="inner">
-          <div>
-            <div className="lbl"><span className="dot" /> Total leakage detected</div>
-            <div className="big">₹<CountUp value={summary.totalLeak} dur={1600} /></div>
-            <div className="cap">bleeding out every year across {summary.count} subscriptions — scanned from {summary.scannedTxns} transactions.</div>
-            <div className="status">✓ Analysis complete · updated just now</div>
+      <input ref={fileRef} type="file" accept=".csv" hidden onChange={(e) => analyzeFile(e.target.files[0])} />
+
+      {/* KPI ROW */}
+      <div className="kpirow">
+        {kpis.map((k, i) => (
+          <div className="kpi" key={i}>
+            <div className="kpi-top">
+              <span className="kpi-t">{k.t}</span>
+              <span className="kpi-delta" style={{ color: k.color, background: k.color + "1f" }}>{k.delta}</span>
+            </div>
+            <div className="kpi-n">{k.money && "₹"}<CountUp value={k.v} dur={1300} />{k.suffix || ""}</div>
+            <Sparkline data={k.spark} color={k.color} w={150} h={40} />
           </div>
-          <div style={{ textAlign: "right" }}>
-            <div className="lbl" style={{ justifyContent: "flex-end" }}>Monthly recurring</div>
-            <div className="big" style={{ fontSize: 42 }}>₹<CountUp value={summary.monthlyRecurring} /></div>
+        ))}
+      </div>
+
+      {/* HERO CASHFLOW + SIDE */}
+      <div className="dashgrid">
+        <div className="panel">
+          <div className="panel-head">
+            <div>
+              <h3>Recurring cashflow</h3>
+              <div className="pdesc">Monthly total of every detected subscription</div>
+            </div>
+            <div className="bignum">₹{summary.monthlyRecurring.toLocaleString("en-IN")}<span>/mo now</span></div>
           </div>
+          <TrendChart data={summary.trend} height={240} />
+        </div>
+
+        <div className="panel">
+          <h3>Leak Score</h3>
+          <div className="pdesc">Share of recurring spend wasted</div>
+          <Gauge value={summary.overallScore} />
         </div>
       </div>
 
-      <input ref={fileRef} type="file" accept=".csv" hidden onChange={(e) => analyzeFile(e.target.files[0])} />
+      {/* RADAR + ACTIVITY + DONUT */}
+      <div className="dashgrid2">
+        <div className="panel">
+          <h3>🛰️ Renewal Radar</h3>
+          <div className="pdesc">Predicted upcoming charges — cancel before they hit</div>
+          <RenewalRadar />
+        </div>
+
+        <div className="panel">
+          <h3>Recent charges</h3>
+          <div className="pdesc">Latest recurring debits</div>
+          <div className="feed">
+            {activity.map((a, i) => (
+              <div className="feedrow" key={i}>
+                <MerchantLogo domain={a.domain} icon={a.icon} color={a.color} size={36} radius={10} />
+                <div>
+                  <div className="fn">{a.name}</div>
+                  <div className="fd">{new Date(a.date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "2-digit" })}</div>
+                </div>
+                <div className="fa">– ₹{a.amount.toLocaleString("en-IN")}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="panel">
+          <h3>By category</h3>
+          <div className="pdesc">Where money concentrates</div>
+          <Donut data={summary.byCategory} />
+        </div>
+      </div>
+
       <div className={`drop ${over ? "over" : ""}`}
         onClick={() => fileRef.current.click()}
         onDragOver={(e) => { e.preventDefault(); setOver(true); }}
         onDragLeave={() => setOver(false)}
         onDrop={(e) => { e.preventDefault(); setOver(false); analyzeFile(e.dataTransfer.files[0]); }}>
         ⬆ Drag &amp; drop your own bank statement (.csv) — columns: date, description, amount
-      </div>
-
-      <div className="stats">
-        {stats.map((s, i) => (
-          <div className="stat" key={i}>
-            <div className="ico">{s.ico}</div>
-            <div className="n">{s.money ? <CountUp value={s.n} prefix="₹" dur={1600} /> : <CountUp value={s.n} dur={900} />}</div>
-            <div className="t">{s.t}</div>
-          </div>
-        ))}
-      </div>
-
-      <div className="grid">
-        <div className="panel">
-          <h3>Where your money goes</h3>
-          <div className="pdesc">Monthly recurring spend by category</div>
-          <Donut data={summary.byCategory} />
-        </div>
-        <div className="panel">
-          <h3>Leak Score</h3>
-          <div className="pdesc">How much of your recurring spend is wasted</div>
-          <Gauge value={summary.overallScore} />
-        </div>
-      </div>
-
-      <div className="panel">
-        <h3>🛰️ Renewal Radar</h3>
-        <div className="pdesc">Upcoming charges predicted from each subscription's rhythm — cancel before they hit</div>
-        <RenewalRadar />
       </div>
     </>
   );
