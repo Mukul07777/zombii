@@ -1,0 +1,11 @@
+node_modules
+dist
+.vercel
+.DS_Store
+*.log
+
+# leftover folders from the old express structure (safe to delete locally)
+backend
+frontend
+
+.vercel
