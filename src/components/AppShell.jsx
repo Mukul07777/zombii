@@ -24,6 +24,8 @@ export default function AppShell() {
 
   return (
     <div className="shell">
+      <button className="menubtn" onClick={() => setOpen(true)} aria-label="Open menu">☰</button>
+      {open && <div className="side-backdrop" onClick={() => setOpen(false)} />}
       <aside className={`sidebar ${open ? "open" : ""}`}>
         <Logo />
         {LINKS.map((l) => (
