@@ -26,8 +26,8 @@ export default function TrendChart({ data, height = 240 }) {
       {[0.25, 0.5, 0.75, 1].map((f, i) => (
         <line key={i} x1={pad} x2={W - pad} y1={y(max * f)} y2={y(max * f)} style={{ stroke: "var(--line)" }} strokeDasharray="4 5" />
       ))}
-      <path d={area} fill="url(#areaG)" />
-      <path d={line} fill="none" stroke="url(#lineG)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d={area} fill="url(#areaG)" className="tc-area" />
+      <path d={line} fill="none" stroke="url(#lineG)" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" className="tc-line" />
       {data.map((d, i) => (
         <g key={i}>
           <circle cx={x(i)} cy={y(d.total)} r="4.5" style={{ fill: "var(--surface)" }} stroke="url(#lineG)" strokeWidth="2.5" />

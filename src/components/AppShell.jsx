@@ -5,6 +5,7 @@ import Drawer from "./Drawer";
 import ChatWidget from "./ChatWidget";
 import Mascot from "./Mascot";
 import Scanning from "./Scanning";
+import Toasts from "./Toasts";
 import { useStore } from "../store";
 
 const LINKS = [
@@ -53,7 +54,14 @@ export default function AppShell() {
           {error && !data ? (
             <div className="loading"><div className="err">⚠ {error}<br />Run <b>vercel dev</b> locally so /api works.</div></div>
           ) : !data ? (
-            <div className="loading"><div className="spin" /><div style={{ color: "var(--muted)", fontFamily: "Poppins", fontWeight: 600 }}>🧟 Hunting zombie subscriptions…</div></div>
+            <div className="skelwrap">
+              <div className="skelrow">
+                <div className="skel k" /><div className="skel k" /><div className="skel k" /><div className="skel k" />
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1.55fr 1fr", gap: 18 }}>
+                <div className="skel big" /><div className="skel side" />
+              </div>
+            </div>
           ) : (
             <div key={loc.pathname} className="fadein"><Outlet /></div>
           )}
@@ -63,6 +71,7 @@ export default function AppShell() {
       {drawerSub && <Drawer />}
       {data && <ChatWidget />}
       <Scanning />
+      <Toasts />
     </div>
   );
 }

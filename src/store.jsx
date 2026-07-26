@@ -15,6 +15,13 @@ export function StoreProvider({ children }) {
   const [samples, setSamples] = useState([]);
   const [persona, setPersona] = useState("professional");
   const [scanning, setScanning] = useState(false);
+  const [toasts, setToasts] = useState([]);
+
+  function toast(msg, kind = "info") {
+    const id = Date.now() + Math.random();
+    setToasts((t) => [...t, { id, msg, kind }]);
+    setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 3400);
+  }
   const [theme, setTheme] = useState(() => {
     try { return localStorage.getItem("zombii-theme") || "dark"; } catch { return "dark"; }
   });
@@ -38,16 +45,16 @@ export function StoreProvider({ children }) {
   async function analyzeFile(file) {
     if (!file) return;
     setError(null); setData(null); setCancelled([]); setReclaimed(0); setPersona("custom"); setScanning(true);
-    try { setData(await analyzeCSV(file)); }
-    catch (e) { setError(e.message); }
+    try { const d = await analyzeCSV(file); setData(d); toast(`✓ Analysed ${d.summary.scannedTxns} transactions · ${d.summary.count} subscriptions found`, "good"); }
+    catch (e) { setError(e.message); toast("⚠ " + e.message, "bad"); }
     finally { setScanning(false); }
   }
 
   async function importText(text, source) {
     if (!text?.trim()) return;
     setError(null); setData(null); setCancelled([]); setReclaimed(0); setPersona("custom"); setScanning(true);
-    try { setData(await analyzeText(text, source)); }
-    catch (e) { setError(e.message); }
+    try { const d = await analyzeText(text, source); setData(d); toast(`✓ AI parsed ${d.parsedCount ?? d.summary.scannedTxns} transactions from your ${source}`, "good"); }
+    catch (e) { setError(e.message); toast("⚠ " + e.message, "bad"); }
     finally { setScanning(false); }
   }
 
@@ -56,6 +63,7 @@ export function StoreProvider({ children }) {
     setCancelled((c) => [...c, sub.name]);
     setReclaimed((r) => r + (sub.save || 0));
     fireConfetti();
+    toast(`🧟 Killed ${sub.name} — ₹${(sub.save || 0).toLocaleString("en-IN")}/yr reclaimed!`, "good");
   }
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
@@ -67,6 +75,7 @@ export function StoreProvider({ children }) {
       chatOpen, setChatOpen,
       samples, persona, loadSample,
       scanning, importText,
+      toasts, toast,
     }}>
       {children}
     </Ctx.Provider>
