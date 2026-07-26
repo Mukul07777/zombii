@@ -4,6 +4,7 @@ import TrendChart from "../components/TrendChart";
 import Donut from "../components/Donut";
 import CountUp from "../components/CountUp";
 import OverlapPanel from "../components/OverlapPanel";
+import Benchmark from "../components/Benchmark";
 
 export default function Insights() {
   const { data } = useStore();
@@ -36,6 +37,12 @@ export default function Insights() {
             <div style={{ color: "var(--muted)", fontSize: 13, marginTop: 4 }}>{c.sub}</div>
           </div>
         ))}
+      </div>
+
+      <div className="panel" style={{ marginBottom: 24 }}>
+        <h3>📊 How you compare</h3>
+        <div className="pdesc">Your subscription waste vs. the average person</div>
+        <Benchmark />
       </div>
 
       <div className="panel" style={{ marginBottom: 24 }}>

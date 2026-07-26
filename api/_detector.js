@@ -58,7 +58,12 @@ const KNOWN = {
   hotstar:  { cat: "Entertainment", color: "#1f80e0", icon: "H",  domain: "hotstar.com" },
   notion:   { cat: "Productivity",  color: "#111",    icon: "N",  domain: "notion.so" },
   linkedin: { cat: "Productivity",  color: "#0a66c2", icon: "in", domain: "linkedin.com" },
+  chatgpt:  { cat: "Productivity",  color: "#10a37f", icon: "AI", domain: "openai.com" },
+  disney:   { cat: "Entertainment", color: "#113ccf", icon: "D+", domain: "disneyplus.com" },
+  chegg:    { cat: "Productivity",  color: "#ea6100", icon: "Ch", domain: "chegg.com" },
 };
+
+const TRIAL_HINT = /premium|plus|pro|trial|subscription|membership|prime/i;
 
 const CADENCE_DAYS = { monthly: 30, weekly: 7, yearly: 365, quarterly: 91 };
 
@@ -208,6 +213,27 @@ export function analyze(transactions, opts = {}) {
     .sort((a, b) => b.annualWaste - a.annualWaste);
   const overlapAnnual = overlaps.reduce((a, o) => a + o.annualWaste, 0);
 
+  // Trial Guardian: recent single-charge subscription-like merchants likely to auto-recur
+  const trials = [];
+  for (const [name, txns] of Object.entries(groups)) {
+    if (txns.length !== 1) continue;
+    const t = txns[0];
+    const daysAgo = Math.round((today - t.date) / 86400000);
+    if (daysAgo < 0 || daysAgo > 45) continue;
+    const meta = metaFor(name);
+    const known = meta.domain != null;
+    if (!known && !(TRIAL_HINT.test(name) && t.amount >= 49 && t.amount <= 2500)) continue;
+    const nextDate = new Date(t.date.getTime() + 30 * 86400000);
+    trials.push({
+      name: titleCase(name), amount: t.amount, date: t.date.toISOString().slice(0, 10),
+      daysAgo, domain: meta.domain, icon: meta.icon, color: meta.color,
+      projectedAnnual: t.amount * 12,
+      nextChargeDate: nextDate.toISOString().slice(0, 10),
+      daysUntilNext: Math.round((nextDate - today) / 86400000),
+    });
+  }
+  trials.sort((a, b) => a.daysUntilNext - b.daysUntilNext);
+
   subscriptions.sort((a, b) => b.score - a.score);
   const totalLeak = subscriptions.reduce((a, s) => a + s.save, 0);
   const monthlyRecurring = subscriptions.reduce((a, s) => a + s.price, 0);
@@ -226,7 +252,7 @@ export function analyze(transactions, opts = {}) {
       overallScore,
       byCategory: Object.entries(byCat).map(([label, value]) => ({ label, value })),
       scannedTxns: transactions.length,
-      trend, overlaps, overlapAnnual,
+      trend, overlaps, overlapAnnual, trials,
     },
   };
 }

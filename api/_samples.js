@@ -24,6 +24,7 @@ const professional = build(
     { desc: "AUTOPAY-CULT FIT GYM MANDATE", amt: 1499, day: "12", from: 1, to: 3 }, // zombie
     { desc: "UPI-ADOBE SYSTEMS SOFTWARE", amt: 1299, day: "15", hikeFrom: 3, hikeAmount: 1699 },
     { desc: "MANDATE-ICLOUD APPLE STORAGE", amt: 219, day: "20" },
+    { desc: "UPI-CHATGPT PLUS TRIAL", amt: 1999, day: "18", from: 7, to: 7 }, // trial about to recur
   ],
   ["2026-01-05,SALARY CREDIT ACME CORP,85000", "2026-03-24,POS-MYNTRA SHOPPING,-3200", "2026-05-18,POS-SWIGGY ORDER,-560"]
 );
@@ -35,6 +36,7 @@ const student = build(
     { desc: "UPI-YOUTUBE PREMIUM", amt: 129, day: "12", hikeFrom: 4, hikeAmount: 149 },
     { desc: "UPI-LEETCODE PREMIUM", amt: 299, day: "14", from: 1, to: 2 }, // zombie
     { desc: "UPI-CANVA PRO", amt: 499, day: "18" },
+    { desc: "UPI-CHEGG STUDY TRIAL", amt: 499, day: "16", from: 7, to: 7 }, // trial about to recur
   ],
   ["2026-01-03,UPI-POCKET MONEY FROM DAD,5000", "2026-04-22,POS-CAMPUS CANTEEN,-240"]
 );
@@ -50,6 +52,7 @@ const family = build(
     { desc: "AUTOPAY-CULT FIT GYM MANDATE", amt: 1499, day: "16", from: 1, to: 2 }, // zombie
     { desc: "UPI-AUDIBLE MEMBERSHIP", amt: 199, day: "19" },
     { desc: "UPI-TIMES PRIME", amt: 133, day: "22" },
+    { desc: "UPI-DISNEY PLUS TRIAL", amt: 299, day: "15", from: 7, to: 7 }, // trial about to recur
   ],
   ["2026-01-05,SALARY CREDIT,145000", "2026-02-14,POS-BIGBASKET,-4200"]
 );

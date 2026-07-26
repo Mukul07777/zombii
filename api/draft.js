@@ -10,7 +10,10 @@ export default async function handler(req, res) {
     const s = body?.sub;
     if (!s) return res.status(400).json({ error: "No subscription provided" });
 
-    const intent = s.type === "zombie" ? "cancel the subscription entirely"
+    const mode = body?.intent; // 'cancel' | 'negotiate' | undefined
+    const intent = mode === "cancel" ? "cancel the subscription entirely and confirm no further charges"
+      : mode === "negotiate" ? "request a retention discount or a lower plan, making clear you'll cancel otherwise"
+      : s.type === "zombie" ? "cancel the subscription entirely"
       : s.type === "hike" ? "push back on the recent price increase and request the old price or a discount, otherwise cancel"
       : "downgrade to a cheaper plan";
 

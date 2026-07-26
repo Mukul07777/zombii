@@ -4,6 +4,7 @@ import CountUp from "../components/CountUp";
 import Gauge from "../components/Gauge";
 import Donut from "../components/Donut";
 import RenewalRadar from "../components/RenewalRadar";
+import TrialGuardian from "../components/TrialGuardian";
 import TrendChart from "../components/TrendChart";
 import Sparkline from "../components/Sparkline";
 import MerchantLogo from "../components/MerchantLogo";
@@ -72,6 +73,12 @@ export default function Dashboard() {
           <h3>🛰️ Renewal Radar</h3>
           <div className="pdesc">Predicted upcoming charges — cancel before they hit</div>
           <RenewalRadar />
+        </div>
+
+        <div className="panel" style={{ gridColumn: "1 / -1" }}>
+          <h3>🛡️ Trial Guardian <span style={{ fontSize: 13, fontWeight: 500, color: "var(--muted)" }}>— free trials about to start charging you</span></h3>
+          <div className="pdesc">New charges that look like trials — kill them before they auto-renew into paid subscriptions</div>
+          <TrialGuardian />
         </div>
 
         <div className="panel">

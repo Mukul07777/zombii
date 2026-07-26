@@ -257,6 +257,31 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:56px;}
 .scan-track i{display:block;height:100%;border-radius:100px;background:var(--grad);transition:width .5s cubic-bezier(.2,.8,.2,1);}
 .scan-pct{text-align:right;font-family:'Poppins';font-weight:700;font-size:13px;color:var(--primary);margin-top:6px;}
 
+/* trial guardian */
+.trials{display:flex;flex-direction:column;gap:10px;}
+.trial{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;border:1px solid rgba(247,148,29,.35);background:rgba(247,148,29,.07);}
+.trial-body{min-width:0;}
+.trial-name{font-family:'Poppins';font-weight:700;font-size:14px;}
+.trial-sub{color:var(--muted);font-size:12.5px;}
+.trial-sub b{color:var(--ink);}
+.trial-warn{margin-left:auto;font-family:'Poppins';font-weight:700;font-size:13px;color:var(--primary);background:var(--surface);border:1px solid var(--line);padding:6px 12px;border-radius:100px;white-space:nowrap;}
+
+/* benchmark */
+.bench-headline{font-family:'Bricolage Grotesque','Poppins';font-weight:800;font-size:clamp(22px,3vw,30px);letter-spacing:-1px;margin-bottom:6px;}
+.bench-pct{background:var(--grad-hot);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.bench-sub{color:var(--muted);font-size:13.5px;margin-bottom:20px;max-width:520px;}
+.bench-bars{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;}
+.bench-row{display:flex;align-items:center;gap:12px;}
+.bench-row .bl{width:64px;font-size:13px;color:var(--muted);font-weight:600;}
+.bench-row .bt{flex:1;height:14px;border-radius:100px;background:var(--bg-tint);overflow:hidden;}
+.bench-row .bt i{display:block;height:100%;border-radius:100px;transition:width 1s cubic-bezier(.2,.8,.2,1);}
+.bench-row .bt i.you{background:var(--grad-hot);}
+.bench-row .bt i.avg{background:var(--muted);opacity:.5;}
+.bench-row .bv{width:96px;text-align:right;font-family:'Poppins';font-weight:700;font-size:14px;}
+.bench-tag{display:inline-block;padding:9px 16px;border-radius:100px;font-weight:600;font-size:13.5px;font-family:'Poppins';}
+.bench-tag.bad{background:rgba(240,90,63,.13);color:var(--red);}
+.bench-tag.good{background:rgba(53,192,125,.13);color:var(--green);}
+
 /* overlap detector */
 .overlaps{display:flex;flex-direction:column;gap:12px;}
 .overlap{border:1px solid var(--line);border-radius:16px;padding:16px;background:var(--surface-2);}

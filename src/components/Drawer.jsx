@@ -15,12 +15,12 @@ export default function Drawer() {
   // charge history as a mini trend series
   const series = s.history.map((h) => ({ month: h.date.slice(0, 7), total: h.amount }));
 
-  async function draftEmail() {
+  async function draftEmail(intent) {
     setDrafting(true); setEmail(""); setCopied(false);
     try {
       const r = await fetch("/api/draft", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sub: { name: s.name, price: s.price, cadence: s.cadence, type: s.type, flag: s.flag } }),
+        body: JSON.stringify({ intent, sub: { name: s.name, price: s.price, cadence: s.cadence, type: s.type, flag: s.flag } }),
       });
       const j = await r.json();
       setEmail(j.email || j.error || "Could not draft.");
@@ -92,9 +92,15 @@ export default function Drawer() {
         )}
         {s.save > 0 && !isCancelled && <div className="savenote">💰 Saves ₹{s.save.toLocaleString("en-IN")} / year</div>}
 
-        <button className="act downgrade" style={{ marginTop: 12 }} onClick={draftEmail} disabled={drafting}>
-          {drafting ? "✍ Drafting…" : "✍ Draft cancellation email (AI)"}
-        </button>
+        <div className="dsub" style={{ marginTop: 18 }}>✍ Let the AI write it for you</div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <button className="act cancel" style={{ flex: 1 }} onClick={() => draftEmail("cancel")} disabled={drafting}>
+            {drafting ? "…" : "Draft cancellation"}
+          </button>
+          <button className="act downgrade" style={{ flex: 1 }} onClick={() => draftEmail("negotiate")} disabled={drafting}>
+            {drafting ? "…" : "Draft discount request"}
+          </button>
+        </div>
         {email && (
           <div className="emailbox">
             <textarea value={email} readOnly rows={9} />
