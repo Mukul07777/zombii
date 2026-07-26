@@ -41,8 +41,8 @@ export default function Settings() {
       </div>
 
       <div className="panel" style={{ marginBottom: 18 }}>
-        <h3>🏦 Connect your bank</h3>
-        <div className="pdesc">In production, Zombii would auto-import transactions via a secure aggregator (Plaid / Account Aggregator) — no manual uploads.</div>
+        <h3>🏦 Connect your bank <span className="concept-tag">Concept · for reference</span></h3>
+        <div className="pdesc">Illustrates the production vision — Zombii would auto-import transactions via a secure aggregator (Account Aggregator / Plaid), no manual uploads. This button is a mock to show the roadmap.</div>
         {settings.bankConnected ? (
           <div className="bank-connected">✓ Connected (demo) · auto-scan every day</div>
         ) : (

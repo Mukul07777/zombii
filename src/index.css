@@ -290,6 +290,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:56px;}
 .toggle span{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 4px rgba(0,0,0,.3);}
 .toggle[data-on="true"] span{left:25px;}
 .bank-connected{display:inline-block;background:rgba(53,192,125,.13);color:var(--green);font-family:'Poppins';font-weight:700;padding:11px 18px;border-radius:12px;}
+.concept-tag{font-size:11px;font-weight:700;font-family:'Poppins';color:var(--primary);background:rgba(247,148,29,.14);padding:4px 10px;border-radius:100px;margin-left:8px;vertical-align:middle;}
 .histlist{display:flex;flex-direction:column;}
 .histrow{display:flex;align-items:center;gap:14px;padding:10px 0;border-bottom:1px dashed var(--line);font-size:13px;}
 .histrow:last-child{border-bottom:none;}
