@@ -25,6 +25,21 @@ export function StoreProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     try { return localStorage.getItem("zombii-theme") || "dark"; } catch { return "dark"; }
   });
+  const [settings, setSettings] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("zombii-settings")) || { alertThreshold: 60, notify: true, bankConnected: false }; }
+    catch { return { alertThreshold: 60, notify: true, bankConnected: false }; }
+  });
+  const [history, setHistory] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("zombii-history")) || []; } catch { return []; }
+  });
+
+  function updateSettings(patch) {
+    setSettings((s) => {
+      const next = { ...s, ...patch };
+      try { localStorage.setItem("zombii-settings", JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }
 
   useEffect(() => {
     fetchDemo("professional").then(setData).catch((e) => setError(e.message));
@@ -41,6 +56,17 @@ export function StoreProvider({ children }) {
     document.body.classList.toggle("light", theme === "light");
     try { localStorage.setItem("zombii-theme", theme); } catch {}
   }, [theme]);
+
+  // record every analysis to a rolling history (monitoring over time)
+  useEffect(() => {
+    if (!data) return;
+    setHistory((h) => {
+      const entry = { at: Date.now(), leak: data.summary.totalLeak, score: data.summary.overallScore, count: data.summary.count, persona: data.profile.persona || "custom" };
+      const next = [...h, entry].slice(-12);
+      try { localStorage.setItem("zombii-history", JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }, [data]);
 
   async function analyzeFile(file) {
     if (!file) return;
@@ -66,16 +92,28 @@ export function StoreProvider({ children }) {
     toast(`🧟 Killed ${sub.name} — ₹${(sub.save || 0).toLocaleString("en-IN")}/yr reclaimed!`, "good");
   }
 
+  function killAllZombies() {
+    if (!data) return;
+    const zombies = data.subscriptions.filter((s) => s.type === "zombie" && !cancelled.includes(s.name));
+    if (!zombies.length) { toast("No live zombies left to kill 🎉", "good"); return; }
+    const sum = zombies.reduce((a, s) => a + (s.save || 0), 0);
+    setCancelled((c) => [...c, ...zombies.map((s) => s.name)]);
+    setReclaimed((r) => r + sum);
+    fireConfetti();
+    toast(`💥 Killed ${zombies.length} zombies — ₹${sum.toLocaleString("en-IN")}/yr reclaimed!`, "good");
+  }
+
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   return (
     <Ctx.Provider value={{
       data, error, analyzeFile, theme, toggleTheme,
-      drawerSub, setDrawerSub, cancelled, reclaimed, killSub,
+      drawerSub, setDrawerSub, cancelled, reclaimed, killSub, killAllZombies,
       chatOpen, setChatOpen,
       samples, persona, loadSample,
       scanning, importText,
       toasts, toast,
+      settings, updateSettings, history,
     }}>
       {children}
     </Ctx.Provider>

@@ -1,16 +1,20 @@
 // Ask Zombii — chat grounded in the user's subscription data, powered by Groq.
 // Requires env var GROQ_API_KEY (set in Vercel project settings / local .env).
 
+import { readBody, str, methodPost } from "./_guard.js";
+
 export default async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).json({ error: "Use POST" });
+  if (!methodPost(req, res)) return;
 
   const key = process.env.GROQ_API_KEY;
   if (!key) return res.status(200).json({ reply: "⚠ Ask Zombii isn't configured yet — add a GROQ_API_KEY env var in Vercel to enable the AI assistant." });
 
   try {
-    let body = req.body;
-    if (typeof body === "string") body = JSON.parse(body || "{}");
-    const { message, context } = body || {};
+    const parsed = readBody(req);
+    if (!parsed.ok) return res.status(400).json({ error: parsed.error });
+    const body = parsed.body;
+    const message = str(body?.message, 1000);
+    const context = body?.context;
     if (!message) return res.status(400).json({ error: "No message" });
 
     const system = `You are Zombii, a sharp, friendly money assistant inside a subscription-leak app.

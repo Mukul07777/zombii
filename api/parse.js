@@ -1,13 +1,15 @@
 // Agentic parser: turns ANY statement/SMS/email text into structured transactions
 // via Groq, then runs the detection engine. Falls back to CSV parsing if no key.
 import { analyze, parseCSV, greeting } from "./_detector.js";
+import { readBody, str, methodPost } from "./_guard.js";
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).json({ error: "Use POST" });
+  if (!methodPost(req, res)) return;
   try {
-    let body = req.body;
-    if (typeof body === "string") body = JSON.parse(body || "{}");
-    const text = (body?.text || "").trim();
+    const parsed = readBody(req);
+    if (!parsed.ok) return res.status(400).json({ error: parsed.error });
+    const body = parsed.body;
+    const text = str(body?.text, 20000).trim();
     if (!text) return res.status(400).json({ error: "No text provided" });
 
     let txns = [];

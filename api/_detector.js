@@ -133,8 +133,14 @@ export function analyze(transactions, opts = {}) {
       : cadence.label === "quarterly" ? Math.round(latest.amount / 3)
       : latest.amount;
 
-    const priceRose = latest.amount > first.amount * 1.05;
+    // Price-hike detection: relative jump OR statistical anomaly (z-score) vs history.
+    const amounts = txns.map((t) => t.amount);
+    const mean = amounts.reduce((a, b) => a + b, 0) / amounts.length;
+    const std = Math.sqrt(amounts.reduce((a, b) => a + (b - mean) ** 2, 0) / amounts.length);
+    const zScore = std > 0 ? (latest.amount - mean) / std : 0;
+    const priceRose = latest.amount > first.amount * 1.05 || (std > 0 && zScore > 1.4 && latest.amount > first.amount);
     const hikePct = Math.round(((latest.amount - first.amount) / first.amount) * 100);
+    const spentTotal = amounts.reduce((a, b) => a + b, 0); // total paid so far
     const daysSinceLast = (today - latest.date) / 86400000;
     const expectedGap = cadence.label === "monthly" ? 31 : cadence.label === "weekly" ? 8 : 366;
     const stale = daysSinceLast > expectedGap * 1.5;
@@ -180,6 +186,9 @@ export function analyze(transactions, opts = {}) {
       firstCharge: first.amount, latestCharge: latest.amount,
       nextChargeDate: nextDate.toISOString().slice(0, 10), daysUntil,
       confidence: confidenceOf(dates),
+      anomalyZ: Math.round(zScore * 100) / 100,
+      spentTotal,
+      regret: zombie ? spentTotal : 0, // money paid into an unused subscription
       history: txns.map((t) => ({ date: t.date.toISOString().slice(0, 10), amount: t.amount })),
     });
   }

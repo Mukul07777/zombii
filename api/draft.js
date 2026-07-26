@@ -1,12 +1,15 @@
 // Draft a cancellation / downgrade / renegotiation email for one subscription, via Groq.
+import { readBody, methodPost } from "./_guard.js";
+
 export default async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).json({ error: "Use POST" });
+  if (!methodPost(req, res)) return;
   const key = process.env.GROQ_API_KEY;
   if (!key) return res.status(200).json({ email: "Add a GROQ_API_KEY env var in Vercel to enable AI-drafted emails." });
 
   try {
-    let body = req.body;
-    if (typeof body === "string") body = JSON.parse(body || "{}");
+    const parsed = readBody(req);
+    if (!parsed.ok) return res.status(400).json({ error: parsed.error });
+    const body = parsed.body;
     const s = body?.sub;
     if (!s) return res.status(400).json({ error: "No subscription provided" });
 

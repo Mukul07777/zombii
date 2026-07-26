@@ -13,6 +13,8 @@ const LINKS = [
   { to: "/app/subscriptions", ic: "🔁", label: "Subscriptions" },
   { to: "/app/simulator", ic: "🚀", label: "Simulator" },
   { to: "/app/insights", ic: "📈", label: "Insights" },
+  { to: "/app/report", ic: "📄", label: "Report" },
+  { to: "/app/settings", ic: "⚙", label: "Settings" },
 ];
 
 export default function AppShell() {
